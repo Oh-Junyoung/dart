@@ -30,72 +30,36 @@
  *   POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef DART_COMMON_PLATFORM_HPP_
-#define DART_COMMON_PLATFORM_HPP_
+#include <dart/gui/include_im_gui.hpp>
 
-// Operating systems and architectures
-#if defined(__linux__)
+#include <gtest/gtest.h>
 
-  #define DART_OS_LINUX 1
-  #if __x86_64__ || __ppc64__
-    #define DART_ARCH_64BITS 1
-  #else
-    #define DART_ARCH_32BITS 1
-  #endif
+TEST(Issue2516, AddFontFromMemoryCompressedTTF_NullData)
+{
+  ImFontAtlas atlas;
 
-#elif defined(__FreeBSD__)
+  ImFont* font = atlas.AddFontFromMemoryCompressedTTF(
+      nullptr, 0, 16.0f, nullptr, nullptr);
 
-  #define DART_OS_FREEBSD 1
-  #if __x86_64__ || __ppc64__
-    #define DART_ARCH_64BITS 1
-  #else
-    #define DART_ARCH_32BITS 1
-  #endif
+  EXPECT_EQ(font, nullptr);
+}
 
-#elif defined(__APPLE__)
+TEST(Issue2516, AddFontFromMemoryTTF_NullData)
+{
+  ImFontAtlas atlas;
 
-  #define DART_OS_MACOS 1
-  #if __LP64__
-    #define DART_ARCH_64BITS 1
-  #else
-    #define DART_ARCH_32BITS 1
-  #endif
+  ImFont* font
+      = atlas.AddFontFromMemoryTTF(nullptr, 0, 16.0f, nullptr, nullptr);
 
-#elif defined(_WIN32)
+  EXPECT_EQ(font, nullptr);
+}
 
-  #define DART_OS_WINDOWS 1
-  #define DART_ARCH_32BITS 1
+TEST(Issue2516, AddFontFromMemoryCompressedBase85TTF_NullData)
+{
+  ImFontAtlas atlas;
 
-#elif defined(_WIN64)
+  ImFont* font = atlas.AddFontFromMemoryCompressedBase85TTF(
+      nullptr, 16.0f, nullptr, nullptr);
 
-  #define DART_OS_WINDOWS 1
-  #define DART_ARCH_64BITS 1
-
-#else
-
-  #error Unsupported platform.
-
-#endif // if defined(__linux__)
-
-// Define undefined preprocessors as 0
-#ifndef DART_OS_WINDOWS
-  #define DART_OS_WINDOWS 0
-#endif
-
-#ifndef DART_OS_LINUX
-  #define DART_OS_LINUX 0
-#endif
-
-#ifndef DART_OS_MACOS
-  #define DART_OS_MACOS 0
-#endif
-
-#ifndef DART_ARCH_32BITS
-  #define DART_ARCH_32BITS 0
-#endif
-
-#ifndef DART_ARCH_64BITS
-  #define DART_ARCH_64BITS 0
-#endif
-
-#endif // DART_COMMON_PLATFORM_HPP_
+  EXPECT_EQ(font, nullptr);
+}
